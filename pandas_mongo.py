@@ -16,7 +16,7 @@ class PyMongoAttribute():
 
 class PyMongoDataset():
 
-    def __init__(self, host:str, port:int, db:str, collection:str, attributes:List[str]):
+    def __init__(self, host:str, port:int, db:str, collection:str, attributes:List[PyMongoAttribute]):
         # mongodb へのアクセスを確立
         self.client = MongoClient(host, port)
         self.db = self.client[db]
@@ -35,7 +35,7 @@ class PyMongoDataset():
                     t.append(data[attr.attribute])
             yield tuple(t)
     
-    def get_dataset(self)->tf.data.Dataset:
+    def create_dataset(self)->tf.data.Dataset:
         t = []
         for a in self.attributes:
             if a.type == PyMongType.INT32:
@@ -56,7 +56,6 @@ if __name__ == '__main__':
     ]
 
     gen = PyMongoDataset('localhost', 27017, 'iris', 'iris_collection', attributes)
-    # ds = tf.data.Dataset.from_generator(gen.get_generator, output_types=(tf.float32, tf.float32))
     ds = gen.get_dataset()
     iterator = ds.make_initializable_iterator()
     init = iterator.initializer

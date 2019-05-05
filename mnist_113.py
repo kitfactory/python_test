@@ -172,6 +172,8 @@ exit()
 # print(dataset)
 
 
+
+
 model = tf.keras.Sequential()
 model.add(tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(28, 28, 1)))
 model.add(tf.keras.layers.Conv2D(64, (3, 3), activation='relu'))
@@ -197,6 +199,7 @@ sess.run(tf.global_variables_initializer())
 #                    epochs=10,
 #                    verbose=1)
 
+checkpoint = tf.keras.callbacks.ModelCheckpoint('model', monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=True, mode='auto', period=1)
 
 history = model.fit(dataset,
                     steps_per_epoch=600,

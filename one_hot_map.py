@@ -13,7 +13,6 @@ beta_dist = tf.distributions.Beta(MIXUP_HYPER_PARAM_ALPHA, MIXUP_HYPER_PARAM_ALP
 
 ds = tf.data.Dataset.from_tensor_slices(oh)
 
-
 def mixup_true_func(idx, label):
     """mixupでキープしておいたラベルを返却する。
     

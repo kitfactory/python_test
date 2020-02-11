@@ -4,7 +4,6 @@ from dataset import CatsVsDogsDataset
 
 class Trainer():
 
-    
     def __init__(model:tf.kera.Model,train:tf.data.Dataset,train_size:int, validation:tf.data.Dataset,validation_size:int):
         self.model = model
         self.train = train
@@ -12,13 +11,16 @@ class Trainer():
         self.validation = validation
         self.validation_size = validation_size
 
-    def train(self, batch_size=10,epochs=100,logdir="./logs"):
+    def train(self, batch_size=10,epochs=100,logdir="./logs", loss="categorical_crossentropy",optimizer="adam"):
         train = train.repeat().batch(batch_size).prefetch(2)
         validation = validation.repeat().batch(batch_size).prefetch(2)
-        callback:List[tf.keras.callbacks.Callback] = [tf.keras.callbacks.TensorBoard(log_dir=logdir)]
-        model.compile(loss='categorical_crossentropy',optimizer='adam',metrics="accuracy")
+        callback:List[tf.keras.callbacks.Callback] = [
+            tf.keras.callbacks.TensorBoard(log_dir=logdir),
+            tf.keras.callbacks.ModelCheckpoint(filepath="model.hdf5",save_best_only=True,monitor="val_acc")
+        ]
+        model.compile(loss=loss,optimizer=optimizer,metrics="accuracy")
         model.summary()
-        
+
         model.fit(
             x=train,
             steps_per_epoch=self.train_size//batch_size,

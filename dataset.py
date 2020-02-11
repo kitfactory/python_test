@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 import tensorflow as tf
 import tensorflow_datasets as tfds
 from tensorflow_datasets import Split
+
+from typing import Callable
 from typing import Dict
 
 class ImageClassifyDataset(ABC):
@@ -139,11 +141,11 @@ class DatasetUtil():
             data["label"] = tf.one_hot(data["label"], classes)
             data["image"] = tf.cast(data["image"], tf.float32)
             data["image"] = data["image"]/255.0
-            return data
+            return (data["image"], data["label"])
         return image_classificaiton_util_map
     
     @classmethod
-    def resize_with_crop_or_pad(td.data.Dataset, hight:int, width;int)->Callable[[Dict]->Dict]:
+    def resize_with_crop_or_pad(dataset:tf.data.Dataset, hight:int, width:int)->Callable[[Dict],Dict]:
         def __resize_with_crop_or_pad(data:Dict)->Dict:
             data["image"] = tf.image.resize_with_crop_or_pad(data["image"], hight, width)
             return data

@@ -17,7 +17,25 @@ class ClasificationModel(ABC):
 class SimpleCNN(ImageBaseModel):
     @classmethod
     def get_base_model(cls, h:int,w:int,c:int):
-        input_layer = tf.keras.Input(shape=(h,w,c),name='input')
+        """
+        model = tf.keras.Sequential()
+        model.add(tf.keras.layers.Conv2D(32,(3,3),padding='same',input_shape=(h,w,c)))
+        model.add(tf.keras.layers.Activation('relu'))
+        model.add(tf.keras.layers.Conv2D(32,(3,3),padding='same'))
+        model.add(tf.keras.layers.Activation('relu'))
+        model.add(tf.keras.layers.MaxPool2D(pool_size=(2,2)))
+        model.add(tf.keras.layers.Dropout(0.25))
+
+        model.add(tf.keras.layers.Conv2D(64,(3,3),padding='same'))
+        model.add(tf.keras.layers.Activation('relu'))
+        model.add(tf.keras.layers.Conv2D(64,(3,3),padding='same'))
+        model.add(tf.keras.layers.Activation('relu'))
+        model.add(tf.keras.layers.MaxPool2D(pool_size=(2,2)))
+        model.add(tf.keras.layers.Dropout(0.25))
+        return model
+
+        """
+        input_layer = tf.keras.Input(shape=(h,w,c),name='input',dtype=tf.float32)
         x = tf.keras.layers.Conv2D(32, (3, 3), padding='same', name='conv2d-1')(input_layer)
         x = tf.keras.layers.Activation('relu')(x)
         x = tf.keras.layers.Conv2D(32, (3, 3), padding='same', name='conv2d-2')(x)
